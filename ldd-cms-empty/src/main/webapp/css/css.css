@@ -1,0 +1,24 @@
+﻿@charset "UTF-8";
+a:hover { text-decoration:none;}
+img{ border:0px;}
+table {width:100% ;border: 1px solid #B1CDE3; border-collapse: collapse;}
+td,th {text-align: center;border: 1px solid #B1CDE3;font-size:14px;color: #4f6b72;height: 45px;}
+tr:HOVER{background-color: #B1CDE3}
+input[type="text"]{
+border: 1px solid; border-color: #CCC #EEE #EEE #CCC;
+background: #F5F5F5;
+height: 32px;
+width: 160px;
+}
+input[type="submit"]{
+border: 1px solid; border-color: #EEE #CCC #CCC #EEE; width: 80px; height: 32px;
+color: #000; font-weight: bold; background: #F5F5F5;margin-left:10px;margin-right: 10px;
+}
+input[type="button"]{
+border: 1px solid; border-color: #EEE #CCC #CCC #EEE; width: 80px; height: 32px;
+color: #000; font-weight: bold; background: #F5F5F5;margin-left:10px;margin-right: 10px;
+}
+select{
+border: 1px solid; border-color: #EEE #CCC #CCC #EEE; width: 80px; height: 32px;
+color: #000; font-weight: bold; background: #F5F5F5;margin-left:10px;margin-right: 10px;
+}

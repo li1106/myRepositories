@@ -64,6 +64,12 @@ public class Article implements Serializable {
 	
 	/**更新时间**/
 	private Date updated;
+	
+	/** 关键字**/
+	private String keywords;
+	
+	/**原文链接 **/
+	private String orglink;
 
 	
 	//---------------------------------------------------------------------
@@ -191,9 +197,27 @@ public class Article implements Serializable {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
+	
+	
 
 	
 	//---------------------------------------------------------------------
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	public String getOrglink() {
+		return orglink;
+	}
+
+	public void setOrglink(String orglink) {
+		this.orglink = orglink;
+	}
 
 	@Override
 	public int hashCode() {
@@ -219,5 +243,15 @@ public class Article implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", title=" + title + ", summary=" + summary + ", content=" + content + ", picture="
+				+ picture + ", channel=" + channel + ", category=" + category + ", author=" + author + ", hits=" + hits
+				+ ", hot=" + hot + ", status=" + status + ", deleted=" + deleted + ", created=" + created + ", updated="
+				+ updated + ", keywords=" + keywords + ", orglink=" + orglink + "]";
+	}
+	
+	
 	
 }

@@ -27,6 +27,8 @@
 		<result column="category_id" property="category.id" jdbcType="INTEGER" />
 		<result column="category_name" property="category.name"
 			jdbcType="VARCHAR" />
+		<result column="keywords" property="keywords" jdbcType="VARCHAR" />
+		<result column="orglink" property="orglink" jdbcType="VARCHAR" />
 
 		<!-- 多对一查询自动映射实体 <association property="channel"> <id column="channel_id" 
 			property="id" jdbcType="INTEGER"/> <result column="name" property="name" 
@@ -52,7 +54,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -71,11 +74,13 @@
 	</sql>
 
 	<sql id="Base_Column_List">
-		id, title, summary, picture, channel_id, category_id, user_id, hits, hot,
+		id, title, summary, picture, channel_id, category_id,
+		user_id, hits, hot,
 		status, deleted, created, updated
 	</sql>
 	<sql id="Base_Column_Lob">
-		id, title, summary, picture, channel_id, category_id, user_id, hits, hot,
+		id, title, summary, picture, channel_id, category_id,
+		user_id, hits, hot,
 		status, deleted, created, updated, content
 	</sql>
 
@@ -121,6 +126,12 @@
 			<if test="content != null">
 				content,
 			</if>
+			<if test="keywords != null">
+				keywords,
+			</if>
+			<if test="orglink != null">
+				orglink,
+			</if>
 		</trim>
 
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -163,38 +174,57 @@
 			<if test="content != null">
 				#{content,jdbcType=CLOB},
 			</if>
+			<if test="keywords != null">
+				#{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="orglink != null">
+				#{orglink,jdbcType=VARCHAR},
+			</if>
 		</trim>
 	</insert>
 	<!-- 根据主键查询 -->
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		SELECT
-		b.id, b.title, b.picture, b.summary, b.content, b.channel_id,
-		b.category_id, b.user_id, b.hits, b.hot, b.created, b.updated,
+		b.id, b.title, b.picture, b.summary, b.content,
+		b.channel_id,
+		b.category_id, b.user_id, b.hits, b.hot,
+		b.created,b.keywords,b.orglink,
+		b.updated,
 		u.id as author_id,
-		u.nickname as author_nickname,
+		u.nickname
+		as
+		author_nickname,
 		ch.id as channel_id,
 		ch.name as channel_name,
-		ca.id as category_id,
+		ca.id as
+		category_id,
 		ca.name as category_name
 		FROM
 		cms_article as b
-		LEFT JOIN cms_channel as ch ON b.channel_id=ch.id
-		LEFT JOIN cms_category as ca ON b.user_id=ca.id
+		LEFT JOIN
+		cms_channel as ch ON b.channel_id=ch.id
+		LEFT JOIN cms_category as ca ON
+		b.user_id=ca.id
 		LEFT JOIN cms_user as u ON b.user_id=u.id
-		WHERE b.id = #{id,jdbcType=INTEGER}
+		WHERE b.id =
+		#{id,jdbcType=INTEGER}
 	</select>
 
 	<select id="selects" resultMap="BaseResultMap">
 		SELECT
-		b.id, b.title, b.picture, b.summary, b.channel_id, b.category_id,
-		b.user_id, b.hits, b.hot,b.status,b.deleted, b.created, b.updated,
+		b.id, b.title, b.picture, b.summary, b.channel_id,
+		b.category_id,
+		b.user_id, b.hits, b.hot,b.status,b.deleted, b.created,
+		b.updated,
 		u.id as author_id,
 		u.nickname as author_nickname,
-		ch.id as channel_id,
+		ch.id as
+		channel_id,
 		ch.name as channel_name,
 		ca.id as category_id,
-		ca.name as category_name
+		ca.name as
+		category_name
 		FROM
 		cms_article as b<!-- 文章表 -->
 		LEFT JOIN cms_channel as ch ON b.channel_id=ch.id<!-- 频道表 -->
@@ -209,7 +239,8 @@
 			AND b.channel_id = #{article.channel.id,jdbcType=INTEGER}
 		</if>
 		<if test="article.category != null and article.category.id != null">
-			AND b.category_id = #{article.category.id,jdbcType=INTEGER}
+			AND b.category_id =
+			#{article.category.id,jdbcType=INTEGER}
 		</if>
 		<if test="article.status != null">
 			AND b.status = #{article.status,jdbcType=INTEGER}
@@ -238,14 +269,20 @@
 
 	<select id="queryAll" parameterType="article" resultType="article">
 		SELECT
-		b.id, b.title, b.picture, b.summary, b.channel_id, b.category_id,
-		b.user_id, b.hits, b.hot,b.status,b.deleted, b.created, b.updated,
+		b.id, b.title, b.picture, b.summary, b.channel_id,
+		b.category_id,
+		b.user_id, b.hits, b.hot,b.status,b.deleted, b.created,
+		b.updated,b.keywords,b.orglink,
 		u.id as author_id,
-		u.nickname as author_nickname,
-		ch.id as channel_id,
+		u.nickname as
+		author_nickname,
+		ch.id as
+		channel_id,
 		ch.name as channel_name,
-		ca.id as category_id,
-		ca.name as category_name
+		ca.id as
+		category_id,
+		ca.name as
+		category_name
 		FROM
 		cms_article as b<!-- 文章表 -->
 		LEFT JOIN cms_channel as ch ON b.channel_id=ch.id<!-- 频道表 -->
@@ -260,7 +297,8 @@
 			AND b.channel_id = #{article.channel.id,jdbcType=INTEGER}
 		</if>
 		<if test="article.category != null and article.category.id != null">
-			AND b.category_id = #{article.category.id,jdbcType=INTEGER}
+			AND b.category_id =
+			#{article.category.id,jdbcType=INTEGER}
 		</if>
 		<if test="article.status != null">
 			AND b.status = #{article.status,jdbcType=INTEGER}
@@ -323,7 +361,8 @@
 
 	<!-- 点击量方法 -->
 	<update id="increaseHit" parameterType="java.lang.Integer">
-		update cms_article set hits=hits+1 where id = #{id,jdbcType=INTEGER}
+		update cms_article set
+		hits=hits+1 where id = #{id,jdbcType=INTEGER}
 	</update>
 
 	<update id="updateByKey" parameterType="com.li.cms.domain.Article">
@@ -352,6 +391,15 @@
 			</if>
 			<if test="content != null">
 				content = #{content,jdbcType=CLOB},
+			</if>
+			<if test="keywords != null">
+				keywords = #{keywords,jdbcType=VARCHAR},
+			</if>
+			<if test="orglink != null">
+				orglink = #{orglink,jdbcType=VARCHAR},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted,jdbcType=BIT},
 			</if>
 		</set>
 

@@ -56,14 +56,25 @@ public class UserController {
 	}
 	
 	@RequestMapping("/blogs")
-	public String blogs(Model model,HttpSession session,@RequestParam(value="page",defaultValue="1")Integer page){
+	public String blogs(Integer status,Model model,HttpSession session,@RequestParam(value="page",defaultValue="1")Integer page){
 		Article article = new Article();
 		User user = (User) session.getAttribute(Constant.LOGIN_USER);//获取当前登陆的用户
 		article.setAuthor(user);
-		List<Article> list = articleService.queryAll(article);
+		if(status!=null || status !=1){
+			if(status == 2){
+				article.setHot(true);
+			}
+			if(status == 3){
+				article.setStatus(1);
+			}
+			if(status == 4){
+				article.setDeleted(true);
+			}
+		}
 		PageHelper.startPage(page, 3);
+		List<Article> list = articleService.queryAll(article);
 		PageInfo<Article> pageInfo = new PageInfo<Article>(list,3);
-		String pageList = PageHelpUtil.page("blogs", pageInfo, null);
+		String pageList = PageHelpUtil.page("blogs", pageInfo, String.valueOf(status));
 		model.addAttribute("blogs", list);
 		model.addAttribute("pageList", pageList);
 		
@@ -74,7 +85,7 @@ public class UserController {
 	@RequestMapping("/blog/edit")
 	public String edit(Integer id,Model model){
 		Article article = articleService.selectByPrimaryKey(id);
-		
+		System.out.println(article);
 		model.addAttribute("blog", article);
 		return "user-space/blog_edit";
 	}
@@ -89,6 +100,7 @@ public class UserController {
 		}
 		
 		if(article.getId() != null){
+			System.out.println("==========="+article);
 			// 修改文章
 			articleService.updateByKey(article);
 		}else{
@@ -107,9 +119,10 @@ public class UserController {
 			
 			article.setAuthor(user);
 			
+			System.out.println("_______________________________"+article);
 			articleService.save(article);
 		}
-		return "redirect:/my/blogs";
+		return "redirect:/my/blogs?status=1";
 	}
 	
 	// 删除文章
@@ -129,9 +142,23 @@ public class UserController {
 	
 	@RequestMapping("/user/save")
 	public String usersave(User user){
-		System.out.println(user.toString()+"====================");
 		userService.updateById(user);
 		return "redirect:/my/useredit";
+	}
+	
+	@RequestMapping("/profile/avatar")
+	public String profile_avatar(){
+		return "/user-space/uploadPic";
+	}
+	
+	@RequestMapping("/blog/updateremove")
+	public String updateremove(Integer id,Model model){
+		Article article = new Article(id);
+		
+		article.setDeleted(true);
+		articleService.updateByKey(article);
+		
+		return "redirect:/my/blogs";
 	}
 	
 }

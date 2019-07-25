@@ -30,7 +30,9 @@ public class Category implements Serializable{
 	/**所属频道**/
 	private Channel channel;
 	
-
+	private String keywords;
+	
+	private String orglink;
 	
 	//------------------------------------------------------
 	
@@ -71,8 +73,24 @@ public class Category implements Serializable{
 	}
 	
 	
+	
+	
+	
+	
 	//------------------------------------------------------
 	
+	public String getOrglink() {
+		return orglink;
+	}
+	public void setOrglink(String orglink) {
+		this.orglink = orglink;
+	}
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

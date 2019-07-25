@@ -5,23 +5,41 @@ import com.github.pagehelper.PageInfo;
 public class PageHelpUtil {
   public static String page(String url, PageInfo<?> pageInfo, String...params) {
 	 if(params!= null && params.length > 0){
-		 String first = "<a href=" + url + "?page=1&start=" + params[0] + "&end="+params[1]+">首页</a>";
+		/* String first = "<a href=" + url + "?page=1&start=" + params[0] + "&end="+params[1]+">首页</a>";
 		    if(pageInfo.getPrePage() == 0){
 		    	pageInfo.setPrePage(1);
 		    }
-		    String prev = "<a href=" + url + "?page=" + pageInfo.getPrePage() + "&start=" + params[0] + "&end="+params[1]+">上一页</a>";
+		    String prev = "<a href=" + url + "?page=" + pageInfo.getPrePage() + "&status=" + status + ">上一页</a>";
 		    String pages = "";
 		    for(int i = 1; i <= pageInfo.getPages(); i++){
 		    	pages +="<a href=" + url + "?page=" + i
-		    			+ "&start=" + params[0] + "&end="+params[1]+">"+i+ " " + "</a>";
+		    			+ "&status=" + status + "&end="+params[1]+">"+i+ " " + "</a>";
 		    }
 		    if(pageInfo.getNextPage() == 0){
 		    	pageInfo.setNextPage(pageInfo.getPages());
 		    }
-		    String next = "<a href=" + url + "?page=" + pageInfo.getNextPage() +  "&start=" + params[0] + "&end="+params[1]+">下一页</a>";
+		    String next = "<a href=" + url + "?page=" + pageInfo.getNextPage() +  "&status=" + status + ">下一页</a>";
 		    
-		    String last = "<a href=" + url + "?page=" + pageInfo.getLastPage() + "&start=" + params[0] + "&end="+params[1]+">尾页</a>";
+		    String last = "<a href=" + url + "?page=" + pageInfo.getLastPage() + "&status=" + status + ">尾页</a>";*/
 		    
+		 Integer status = Integer.parseInt(params[0]);
+		 String first = "<a href=" + url + "?page=1&status=" + status + ">首页</a>";
+		    if(pageInfo.getPrePage() == 0){
+		    	pageInfo.setPrePage(1);
+		    }
+		    String prev = "<a href=" + url + "?page=" + pageInfo.getPrePage() + "&status=" + status + ">上一页</a>";
+		    String pages = "";
+		    for(int i = 1; i <= pageInfo.getPages(); i++){
+		    	pages +="<a href=" + url + "?page=" + i
+		    			+ "&status=" + status + ">"+i+ " " + "</a>";
+		    }
+		    if(pageInfo.getNextPage() == 0){
+		    	pageInfo.setNextPage(pageInfo.getPages());
+		    }
+		    String next = "<a href=" + url + "?page=" + pageInfo.getNextPage() +  "&status=" + status + ">下一页</a>";
+		    
+		    String last = "<a href=" + url + "?page=" + pageInfo.getLastPage() + "&status=" + status + ">尾页</a>";
+		 
 		    return first + " " + prev + " " + pages + " " +
 		    next + " "+ last;
 	 } else{

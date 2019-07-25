@@ -95,8 +95,10 @@ public class HomeController {
 
 	@RequestMapping("/article")
 	public String article(Integer id,Model model){
+		// 点击量增加一
 		articleService.increatHit(id);
 		Article article = articleService.selectByPrimaryKey(id);
+		System.out.println(article.getOrglink());
 		model.addAttribute("blog", article);
 		return "blog";
 	}
