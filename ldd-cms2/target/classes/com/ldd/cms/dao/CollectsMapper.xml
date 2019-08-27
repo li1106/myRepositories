@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldd.cms.dao.CollectsMapper">
+
+	<resultMap type="Collects" id="userMap">
+		<result property="id" column="id" />
+		<result property="created" column="created" />
+
+		<association property="user" javaType="user">
+			<id property="id" column="article_id" />
+		</association>
+
+		<association property="article" javaType="article">
+			<id property="id" column="article_id" />
+		</association>
+	</resultMap>
+
+	<select id="selectObjectByIdAndArticleId" resultMap="userMap">
+		select
+		id,user_id,article_id,created from cms_collects where
+		user_id=#{userId} and article_id=#{articleId}
+	</select>
+
+	<!-- 收藏 -->
+	<insert id="insertObject">
+		insert into
+		cms_collects(user_id,article_id,created)values(#{user.id},#{article.id},now())
+	</insert>
+
+	<delete id="deleteObject">
+		delete from cms_collects where user_id=#{user.id} and
+		article_id=#{article.id}
+	</delete>
+
+	<select id="findCollectsById" resultMap="userMap">
+		select * from
+		cms_collects where user_id=#{id}
+	</select>
+
+	<select id="findCollectsByUserId" resultType="article">
+		select * from
+		cms_article where id in
+		<foreach collection="list" separator="," item="id" open="("
+			close=")">
+			#{id}
+		</foreach>
+	</select>
+
+</mapper>

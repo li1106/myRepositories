@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ldd.cms.dao.CategorysMapper">
+	<select id="selectObjectByChannelId" resultType="category">
+		select
+		id,name,channel_Id from cms_category where channel_Id=#{channelId}
+	</select>
+
+</mapper>
